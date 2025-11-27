@@ -4,8 +4,18 @@ import Quantity from "./Quantity";
 function Items({ addItem }) {
   const [itemName, setItemName] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [error, setError] = useState("");
 
   const handleAdd = () => {
+    if (!Number.isInteger(Number(quantity)) || quantity < 1) {
+      setError("Quantity must be a whole number greater than 0.");
+      return;
+    }
+    if (!itemName) {
+      setError("Please select an item.");
+      return;
+    }
+    setError("");
     addItem({ name: itemName, quantity: Number(quantity) });
   };
 
@@ -30,6 +40,8 @@ function Items({ addItem }) {
       <Quantity onChange={setQuantity} />
 
       <br /><br />
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <button onClick={handleAdd}>Add to Cart</button>
     </div>

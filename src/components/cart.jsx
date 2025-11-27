@@ -1,21 +1,45 @@
-function Cart({ cartItems }) {
+import { useState } from "react";
+
+function Cart({ cartItems, removeItem }) {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+
+  const handleRemove = () => {
+    if (selectedIndex !== null) {
+      const item = cartItems[selectedIndex];
+      console.log(`Removed: ${item.name} (${item.quantity})`);
+
+      removeItem(selectedIndex);
+      setSelectedIndex(null); 
+    }
+  };
   return (
     <div>
       <h2>Cart Items</h2>
 
-      <p>Total Items: {cartItems.length}</p>
+      {cartItems.length === 0 && <p>No items added yet.</p>}
 
-      {cartItems.length === 0 ? (
-        <p>Your cart is empty</p>
-      ) : (
-        <ul>
-          {cartItems.map((item, index) => (
-            <li key={index}>
-              {item.name} — {item.quantity}
-            </li>
+      {cartItems.map((item, index) => (
+        <div key={index} className="cart-row">
+          <input
+            type="radio"
+            name="selectedItem"
+            onChange={() => setSelectedIndex(index)}
+            checked={selectedIndex === index}
+          />
+      
+         <div className="cart-name">{item.name} — {item.quantity}</div>
+        </div>
+   
           ))}
-        </ul>
-      )}
+
+      <button
+        style={{ marginTop: "120px", width: "90px" }}
+        onClick={handleRemove}   
+        disabled={selectedIndex === null}
+      >
+        Remove
+      </button>
     </div>
   );
 }

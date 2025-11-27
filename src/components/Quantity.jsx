@@ -1,18 +1,22 @@
 import { useState } from "react";
 
-export const Quantity = () => {
-   const [count, setCount] = useState(1);
+function Quantity({ onChange }) {
+  const [qty, setQty] = useState(1);
 
-   
-   return (
-        <div className = 'qty'>
-            <button className="change-qty" onClick={() =>setCount(count - 1)}>
-                -
-            </button>
-            <p>Quantity: {count}</p>
-            <button className="change-qty" onClick={() =>setCount(count + 1)}>
-                +
-            </button>
-        </div>
-        )   
+  const handleChange = (e) => {
+    const value = Number(e.target.value);
+    setQty(value);
+    onChange(value);   
+  };
+
+  return (
+    <input
+      type="number"
+      min="1"
+      value={qty}
+      onChange={handleChange}
+    />
+  );
 }
+
+export default Quantity;
